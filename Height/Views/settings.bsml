@@ -1,0 +1,7 @@
+﻿<settings-container>
+	<checkbox-setting apply-on-change="true" value="Enabled" text="Enable Plugin"/>
+	<slider-setting apply-on-change="true" value="Height" text="Height" min="0.01" max="2.5" increment="0.01"/>
+	<horizontal>
+		<text text='Press the Player Height button to apply' align='Center'/>
+	</horizontal>
+</settings-container>
