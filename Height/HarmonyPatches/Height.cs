@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using Height.Configuration;
 using System;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace PreciseHeight.HarmonyPatches
@@ -8,7 +9,7 @@ namespace PreciseHeight.HarmonyPatches
     [HarmonyPatch(typeof(PlayerHeightSettingsController), nameof(PlayerHeightSettingsController.AutoSetHeight))]
     internal class AutoSetHeight
     {
-        static bool Prefix(ref float ____value, ref Vector3SO ____roomCenter, ref PlayerHeightSettingsController __instance, ref Action<float> ___valueDidChangeEvent)
+        static bool Prefix(ref float ____value, ref PlayerHeightSettingsController __instance, ref Action<float> ___valueDidChangeEvent)
         {
             if (PluginConfig.Instance.Enabled)
             {
@@ -26,7 +27,7 @@ namespace PreciseHeight.HarmonyPatches
     [HarmonyPatch(typeof(RoomAdjustSettingsViewController), nameof(RoomAdjustSettingsViewController.Move))]
     internal class Move
     {
-        static bool Prefix(Vector3 move, ref Vector3SO ____roomCenter, ref RoomAdjustSettingsViewController __instance)
+        static bool Prefix(Vector3 move, ref SettingsManager ____settingsManager, ref RoomAdjustSettingsViewController __instance)
         {
             if (PluginConfig.Instance.Enabled)
             {
@@ -39,7 +40,8 @@ namespace PreciseHeight.HarmonyPatches
                     move /= 10;
                 }
 
-                ____roomCenter.value += move;
+                ____settingsManager.settings.room.center += (float3)move;
+                __instance._settingsApplicator.NotifyRoomTransformOffsetWasUpdated();
                 __instance.RefreshTexts();
 
                 return false;
@@ -52,12 +54,13 @@ namespace PreciseHeight.HarmonyPatches
     [HarmonyPatch(typeof(RoomAdjustSettingsViewController), nameof(RoomAdjustSettingsViewController.Rotate))]
     internal class Rotate
     {
-        static bool Prefix(float rotation, ref FloatSO ____roomRotation, ref RoomAdjustSettingsViewController __instance)
+        static bool Prefix(float rotation, ref SettingsManager ____settingsManager, ref RoomAdjustSettingsViewController __instance)
         {
             if (PluginConfig.Instance.Enabled)
             {
                 rotation /= 5;
-                ____roomRotation.value = (rotation + ____roomRotation.value) % 360f;
+                ____settingsManager.settings.room.rotation = (rotation + ____settingsManager.settings.room.rotation) % 360f;
+                __instance._settingsApplicator.NotifyRoomTransformOffsetWasUpdated();
                 __instance.RefreshTexts();
 
                 return false;
