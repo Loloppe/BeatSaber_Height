@@ -28,14 +28,19 @@ namespace Height
         public void OnEnable()
         {
             harmony.PatchAll(Assembly.GetExecutingAssembly());
-            GameplaySetup.instance.AddTab("Height", "Height.Views.settings.bsml", PluginConfig.Instance, MenuType.All);
+            BS_Utils.Utilities.BSEvents.lateMenuSceneLoadedFresh += LateMenuSceneLoadedFresh;
+        }
+
+        public void LateMenuSceneLoadedFresh(ScenesTransitionSetupDataSO scene)
+        {
+            GameplaySetup.Instance.AddTab("Height", "Height.Views.settings.bsml", PluginConfig.Instance, MenuType.All);
         }
 
         [OnDisable]
         public void OnDisable()
         {
             harmony.UnpatchSelf();
-            GameplaySetup.instance.RemoveTab("Height");
+            GameplaySetup.Instance.RemoveTab("Height");
         }
     }
 }
