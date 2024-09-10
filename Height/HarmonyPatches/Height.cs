@@ -9,10 +9,11 @@ namespace PreciseHeight.HarmonyPatches
     [HarmonyPatch(typeof(PlayerHeightSettingsController), nameof(PlayerHeightSettingsController.AutoSetHeight))]
     internal class AutoSetHeight
     {
-        static bool Prefix(ref float ____value, ref PlayerHeightSettingsController __instance, ref Action<float> ___valueDidChangeEvent)
+        static bool Prefix(ref float ____value, ref PlayerHeightSettingsController __instance, ref Action<float> ___valueDidChangeEvent, ref SettingsManager ____settingsManager)
         {
             if (PluginConfig.Instance.Enabled)
             {
+                ____settingsManager.settings.room.center.y += PluginConfig.Instance.Height - ____value;
                 ____value = PluginConfig.Instance.Height;
                 __instance.RefreshUI();
                 ___valueDidChangeEvent?.Invoke(____value);

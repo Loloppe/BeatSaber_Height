@@ -9,6 +9,7 @@ namespace Height.Configuration
         public static PluginConfig Instance { get; set; }
         public virtual bool Enabled { get; set; } = false;
         public virtual float Height { get; set; } = 1.8f;
+        public virtual bool AutoCorrect { get; set; } = true;
 
         /// <summary>
         /// This is called whenever BSIPA reads the config from disk (including when file changes are detected).
