@@ -3,11 +3,11 @@
   "id": "Height",
   "name": "Height",
   "author": "Loloppe",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "",
   "gameVersion": "1.37.5",
   "dependsOn": {
-    "BSIPA": "^4.3.5",
+    "BSIPA": "^4.3.4",
     "BS Utils": "^1.14.0",
     "BeatSaberMarkupLanguage": "^1.11.4"
   }
