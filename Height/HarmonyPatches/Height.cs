@@ -16,7 +16,7 @@ namespace PreciseHeight.HarmonyPatches
                 if (PluginConfig.Instance.AutoCorrect)
                 {
                     var settings = ____settingsManager.settings.room.center;
-                    settings.y += PluginConfig.Instance.Height - ____value;
+                    settings.y = PluginConfig.Instance.Height - ____value;
                 }
                 ____value = PluginConfig.Instance.Height;
                 __instance.RefreshUI();

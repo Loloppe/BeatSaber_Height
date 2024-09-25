@@ -45,7 +45,7 @@
       <Private>False</Private>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="BeatSaber.GameSettings, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL" Publicize="true">
+    <Reference Include="BeatSaber.GameSettings, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <Private>False</Private>
       <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\BeatSaber.GameSettings.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
