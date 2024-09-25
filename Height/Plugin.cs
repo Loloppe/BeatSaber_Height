@@ -28,10 +28,10 @@ namespace Height
         public void OnEnable()
         {
             harmony.PatchAll(Assembly.GetExecutingAssembly());
-            BS_Utils.Utilities.BSEvents.lateMenuSceneLoadedFresh += LateMenuSceneLoadedFresh;
+            BeatSaberMarkupLanguage.Util.MainMenuAwaiter.MainMenuInitializing += MainMenuInit;
         }
 
-        public void LateMenuSceneLoadedFresh(ScenesTransitionSetupDataSO scene)
+        public void MainMenuInit()
         {
             GameplaySetup.Instance.AddTab("Height", "Height.Views.settings.bsml", PluginConfig.Instance, MenuType.All);
         }
