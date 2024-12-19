@@ -9,18 +9,13 @@ namespace PreciseHeight.HarmonyPatches
     [HarmonyPatch(typeof(PlayerHeightSettingsController), nameof(PlayerHeightSettingsController.AutoSetHeight))]
     internal class AutoSetHeight
     {
-        static bool Prefix(ref float ____value, ref PlayerHeightSettingsController __instance, ref Action<float> ___valueDidChangeEvent, ref SettingsManager ____settingsManager)
+        static bool Prefix(ref PlayerHeightSettingsController __instance, ref Action<float> ___valueDidChangeEvent)
         {
             if (PluginConfig.Instance.Enabled)
             {
-                if (PluginConfig.Instance.AutoCorrect)
-                {
-                    var settings = ____settingsManager.settings.room.center;
-                    settings.y = PluginConfig.Instance.Height - ____value;
-                }
-                ____value = PluginConfig.Instance.Height;
+                __instance._value = PluginConfig.Instance.Height;
                 __instance.RefreshUI();
-                ___valueDidChangeEvent?.Invoke(____value);
+                ___valueDidChangeEvent?.Invoke(__instance._value);
 
                 return false;
             }
@@ -32,7 +27,7 @@ namespace PreciseHeight.HarmonyPatches
     [HarmonyPatch(typeof(RoomAdjustSettingsViewController), nameof(RoomAdjustSettingsViewController.Move))]
     internal class Move
     {
-        static bool Prefix(Vector3 move, ref SettingsManager ____settingsManager, ref RoomAdjustSettingsViewController __instance)
+        static bool Prefix(Vector3 move, ref RoomAdjustSettingsViewController __instance)
         {
             if (PluginConfig.Instance.Enabled)
             {
@@ -45,7 +40,7 @@ namespace PreciseHeight.HarmonyPatches
                     move /= 10;
                 }
 
-                ____settingsManager.settings.room.center += (float3)move;
+                __instance._settingsManager.settings.room.center += (float3)move;
                 __instance._settingsApplicator.NotifyRoomTransformOffsetWasUpdated();
                 __instance.RefreshTexts();
 
@@ -59,12 +54,12 @@ namespace PreciseHeight.HarmonyPatches
     [HarmonyPatch(typeof(RoomAdjustSettingsViewController), nameof(RoomAdjustSettingsViewController.Rotate))]
     internal class Rotate
     {
-        static bool Prefix(float rotation, ref SettingsManager ____settingsManager, ref RoomAdjustSettingsViewController __instance)
+        static bool Prefix(float rotation, ref RoomAdjustSettingsViewController __instance)
         {
             if (PluginConfig.Instance.Enabled)
             {
                 rotation /= 5;
-                ____settingsManager.settings.room.rotation = (rotation + ____settingsManager.settings.room.rotation) % 360f;
+                __instance._settingsManager.settings.room.rotation = (rotation + __instance._settingsManager.settings.room.rotation) % 360f;
                 __instance._settingsApplicator.NotifyRoomTransformOffsetWasUpdated();
                 __instance.RefreshTexts();
 
